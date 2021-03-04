@@ -61,7 +61,7 @@ public class Student {
     )
     private int age;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     @Setter(AccessLevel.NONE)
     private StudentIdCard studentIdCard;
@@ -69,6 +69,11 @@ public class Student {
     public void addStudentCardId(StudentIdCard studentIdCard) {
         studentIdCard.setStudent(this);
         this.studentIdCard = studentIdCard;
+    }
+
+    public void removeStudentCardId(StudentIdCard studentIdCard) {
+        studentIdCard.setStudent(null);
+        this.studentIdCard = null;
     }
 
     public Student(String firstName,
@@ -86,7 +91,7 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", cardNumber=" + studentIdCard.getCardNumber() +
+                ", cardNumber=" + studentIdCard +
                 '}';
     }
 }

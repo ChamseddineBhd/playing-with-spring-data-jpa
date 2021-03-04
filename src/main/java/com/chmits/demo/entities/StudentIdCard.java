@@ -59,8 +59,7 @@ public class StudentIdCard {
     public String toString() {
         return "StudentIdCard{" +
                 "id=" + id +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", student=" + student +
+                ", cardNumber='" + cardNumber +
                 '}';
     }
 
