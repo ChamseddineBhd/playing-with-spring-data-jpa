@@ -1,9 +1,6 @@
 package com.chmits.demo.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,7 +13,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity(name = "Student")
 @Table(name = "student")
 @Getter
-@Setter
+@Setter()
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
@@ -64,11 +61,21 @@ public class Student {
     )
     private int age;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    @Setter(AccessLevel.NONE)
+    private StudentIdCard studentIdCard;
+
+    public void addStudentCardId(StudentIdCard studentIdCard) {
+        studentIdCard.setStudent(this);
+        this.studentIdCard = studentIdCard;
+    }
+
     public Student(String firstName,
                    String lastName,
                    String email,
                    Integer age) {
-       this(null, firstName, lastName, email, age);
+       this(null, firstName, lastName, email, age, null);
     }
 
     @Override
@@ -79,6 +86,7 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", cardNumber=" + studentIdCard.getCardNumber() +
                 '}';
     }
 }

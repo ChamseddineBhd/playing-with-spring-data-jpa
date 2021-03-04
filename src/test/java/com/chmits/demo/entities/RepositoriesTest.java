@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Chamseddine Benhamed <chamseddine.benhamed at rte-france.com>
@@ -28,8 +27,11 @@ public class RepositoriesTest {
         Student savedStudent = studentRepository.save(student);
         assertEquals(1, studentRepository.findAll().size());
         assertEquals(22, savedStudent.getAge());
-
+        assertNull(savedStudent.getStudentIdCard());
         assertTrue(studentRepository.findByEmail("jon.doe@gmail.com").isPresent());
+
+        StudentIdCard studentIdCard = new StudentIdCard("11009090");
+        student.addStudentCardId(studentIdCard);
     }
 
 }
