@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 /**
@@ -76,11 +79,33 @@ public class Student {
         this.studentIdCard = null;
     }
 
+    /*
+        orphanRemoval is an entirely ORM-specific thing. It marks "child" entity to be removed when it's no
+        longer referenced from the "parent" entity
+     */
+    @OneToMany(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Book> books = new ArrayList<>();
+
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.setStudent(this);
+    }
+
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        book.setStudent(null);
+    }
+
     public Student(String firstName,
                    String lastName,
                    String email,
                    Integer age) {
-       this(null, firstName, lastName, email, age, null);
+       this(null, firstName, lastName, email, age, null, new ArrayList<>());
     }
 
     @Override
